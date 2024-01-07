@@ -7,6 +7,20 @@
 
 - NFT metadata can be fetched using Rarity Sniper including collection size (total no. of NFTs within collection) and NFT level stats (like rarity score, rarity rank)
 
+```
+https://raritysniper.com/robots.txt
+```
+
+Below displays crawling permissions, which is fully allowed for rarity sniper.
+
+```
+User-agent: *
+Allow: /
+Sitemap: https://raritysniper.com/sitemap
+Sitemap: https://raritysniper.com/news/sitemap.xml
+Sitemap: https://raritysniper.com/news/sitemap-news.xml
+```
+
 - Opensea - was used to initially fetch collection-level stats
 
 - NFT Rarity ranks can also be computed based on custom heuristics, loosely based on existing methods like trait value based rarity scoring, inversely proportional to rarity ranking

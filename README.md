@@ -39,7 +39,7 @@ The total Rarity Score for an NFT is the sum of the Rarity Score of all of it’
 [Ranking Rarity: Understanding Rarity Calculation Methods](https://raritytools.medium.com/ranking-rarity-understanding-rarity-calculation-methods-86ceaeb9b98c)
 
 
-##### Input data - data/Collections.csv
+##### Input data - data/Collections_Assignment.csv
 
 ##### Output files - nftd_data_latest.pkl, data_collection_stats.pkl can be found below
 

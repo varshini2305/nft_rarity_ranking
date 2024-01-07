@@ -7,6 +7,8 @@
 
 - NFT metadata can be fetched using Rarity Sniper including collection size (total no. of NFTs within collection) and NFT level stats (like rarity score, rarity rank)
 
+- Opensea - was used to initially fetch collection-level stats
+
 ```
 https://raritysniper.com/robots.txt
 ```
@@ -21,7 +23,7 @@ Sitemap: https://raritysniper.com/news/sitemap.xml
 Sitemap: https://raritysniper.com/news/sitemap-news.xml
 ```
 
-- Opensea - was used to initially fetch collection-level stats
+Rarity Sniper -
 
 - NFT Rarity ranks can also be computed based on custom heuristics, loosely based on existing methods like trait value based rarity scoring, inversely proportional to rarity ranking
 
@@ -39,7 +41,7 @@ The total Rarity Score for an NFT is the sum of the Rarity Score of all of it’
 
 ##### Input data - data/Collections.csv
 
-- Output files - nftd_data_latest.pkl, data_collection_stats.pkl can be found below
+##### Output files - nftd_data_latest.pkl, data_collection_stats.pkl can be found below
 
 [Output files ](https://drive.google.com/drive/folders/1EZfFEajrYSvyTm89OOFjIpRzs177Stbh?usp=drive_link)
 

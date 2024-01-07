@@ -47,7 +47,7 @@ The total Rarity Score for an NFT is the sum of the Rarity Score of all of it’
 
 ##### Output data - nfts_df.pkl, - nfdf.columns = collection_slug', 'nft_id', 'rank', 'rarityScore', 'image', 'traits'
 
-##### nfts_data_latest.pkl - contains latest status of rarity meta for 364500 NFTs, as the script takes a few more hours to fetch for all ~45L unique NFTs from all the given collections.
+##### nfts_data_latest.pkl - contains latest status of rarity meta for 364500 NFTs, interim data can be found here, as the script takes a few more hours to fetch for all ~45L unique NFTs from all the given collections.
 
 Example record - 
 

@@ -1,0 +1,11 @@
+data/*
+config/*
+!data/Collections_Assignment.csv
+!data/collection_stats_df.pkl
+!data/data_collection_stats.pkl
+# !data/nfts_data_latest.pkl
+# !data/nfts_df.pkl
+
+*.ipynb
+!collections.ipynb
+.DS_Store

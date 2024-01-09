@@ -11,7 +11,7 @@ from functools import lru_cache
 # urls = url_df.values.tolist()
 
 remaining_urls_df = pd.read_pickle("data/remaining_urls_df.pkl")
-urls = remaining_urls_df['url'].values.tolist()
+urls = remaining_urls_df[['nft_id', 'collection_slug', 'url']].values.tolist()
 
 
 

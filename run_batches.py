@@ -1,6 +1,7 @@
 import pandas as pd
 import asyncio
 import aiohttp
+import logging
 import argparse
 from tqdm import tqdm
 
@@ -12,8 +13,6 @@ from functools import lru_cache
 
 remaining_urls_df = pd.read_pickle("data/remaining_urls_df.pkl")
 urls = remaining_urls_df[['nft_id', 'collection_slug', 'url']].values.tolist()
-
-
 
 
 # Command line argument parser
@@ -56,17 +55,29 @@ async def fetch_data(session, url, collection_slug, i, progress_bar):
     nfts_list.append(subset_dict)
 
     global count
+    global nfts_df
     count += 1
 
     progress_bar.update(1)
-    
-    if count % args.batch_size == 0:
-        
-        if nfts_df.empty is False:
-            nfts_df.to_pickle(f"data/prev_nfts_df_{args.start}_{args.start+args.size}.pkl")
+    # print(f"{count=}")
+    try:
+        if count % args.batch_size == 0:
+            prev_filename = f"data/prev_nfts_df_{args.start}_{args.start+args.size}.pkl"
+            
+            if nfts_df.empty is False:
+                print(f"updating {prev_filename=}, {len(nfts_list)=}")
+                nfts_df.to_pickle(f"data/prev_nfts_df_{args.start}_{args.start+args.size}.pkl")
 
-        nfts_df = pd.DataFrame(nfts_list)
-        nfts_df.to_pickle(f"data/nfts_df_{args.start}_{args.start+args.size}.pkl")
+            current_filename = f"data/nfts_df_{args.start}_{args.start+args.size}.pkl"
+            nfts_df = pd.DataFrame(nfts_list)
+
+            print(f"writing to {current_filename=}")
+            nfts_df.to_pickle(current_filename)
+
+    except Exception as e:
+        print("exception")
+        logging.exception(f"traceback as follows...{count=}, {len(nfts_list)=}")
+
 
 async def bound_fetch(sem, func):
     async with sem:
@@ -81,11 +92,21 @@ async def main():
             semaphore = asyncio.Semaphore(max_concurrent_requests)
             tasks = [bound_fetch(semaphore, fetch_data(session, url, collection_slug, i, progress_bar)) for i, collection_slug, url in selected_urls]
             await asyncio.gather(*tasks, return_exceptions=True)
-            
-            # Save the final batch if not a multiple of batch size
-            if nfts_list:
-                nfts_df = pd.DataFrame(nfts_list)
-                nfts_df.to_pickle(f"data/aggregated_nfts_df_{args.start}_{args.start+args.size}.pkl")
+            nfts_df = pd.DataFrame()
+            try:
+                # Save the final batch if not a multiple of batch size
+                if nfts_list:
+                    nfts_df = pd.DataFrame(nfts_list)
+                    final_filename = f"data/aggregated_nfts_df_{args.start}_{args.start+args.size}.pkl"        
+                    nfts_df.to_pickle(final_filename)
+            except KeyboardInterrupt:
+                try:    
+                    final_filename = f"data/aggregated_nfts_df_{args.start}_{args.start+args.size}.pkl"        
+                    print(f"process interrupted, writing until - {count=}, f{len(nfts_list)=} to {final_filename=}")
+                    nfts_df.to_pickle(final_filename)
+                except Exception:
+                    logging.exception("traceback as follows")
+                    print("failed writing contents to the file")
 
 if __name__ == "__main__":
     asyncio.run(main())

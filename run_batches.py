@@ -11,7 +11,10 @@ from functools import lru_cache
 # url_df = pd.read_pickle("data/url_df.pkl")
 # urls = url_df.values.tolist()
 
-remaining_urls_df = pd.read_pickle("data/remaining_urls_df.pkl")
+# remaining_urls_df = pd.read_pickle("data/remaining_urls_df.pkl")
+remaining_urls_df = pd.read_pickle('data/batch_3_urls.pkl')
+
+
 urls = remaining_urls_df[['nft_id', 'collection_slug', 'url']].values.tolist()
 
 
@@ -100,6 +103,15 @@ async def main():
                     final_filename = f"data/aggregated_nfts_df_{args.start}_{args.start+args.size}.pkl"        
                     nfts_df.to_pickle(final_filename)
             except KeyboardInterrupt:
+                try:    
+                    final_filename = f"data/aggregated_nfts_df_{args.start}_{args.start+args.size}.pkl"        
+                    print(f"process interrupted, writing until - {count=}, f{len(nfts_list)=} to {final_filename=}")
+                    nfts_df.to_pickle(final_filename)
+                except Exception:
+                    logging.exception("traceback as follows")
+                    print("failed writing contents to the file")
+            except Exception:
+                logging.exception("traceback as follows")
                 try:    
                     final_filename = f"data/aggregated_nfts_df_{args.start}_{args.start+args.size}.pkl"        
                     print(f"process interrupted, writing until - {count=}, f{len(nfts_list)=} to {final_filename=}")
